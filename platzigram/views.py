@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from datetime import datetime
 import json
 
+
 def hello_world(request):
     now = datetime.now().strftime('%b %dth, %Y - %H:%M hrs')
     return HttpResponse('Hello, the current server time is: {now}'.format(now=str(now)))
@@ -20,7 +21,6 @@ def sorted_numbers(request) :
         'numbers': sorted_numbers_list,
         'message': 'Integers sorted successfully',
     }
-    #import pdb; pdb.set_trace()
     return HttpResponse(
         json.dumps(data_dict, indent=4),
         content_type='application/json'
