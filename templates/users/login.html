@@ -13,10 +13,10 @@
         {% csrf_token %}
 
         <div class="form-group">
-            <input class="form-control" name="username" placeholder="Username" type="text">
+            <input class="form-control" name="username" placeholder="Username" type="text" required="true">
         </div>
         <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password">
+            <input class="form-control" name="password" placeholder="Password" type="password" required="true">
         </div>
 
         <button class="btn btn-primary btn-block mt-5" type="submit">
