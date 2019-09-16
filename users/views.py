@@ -1,8 +1,9 @@
 """ User views. """
 
 # django
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 
 def login_view(request):
@@ -14,8 +15,13 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('feed')
-            # Redirect to a success page.
         else:
             return render(request, 'users/login.html', {'error': 'Invalid username and password'})
 
     return render(request, 'users/login.html')
+
+
+@login_required()
+def logout_view(request):
+    logout(request)
+    return redirect('login')
