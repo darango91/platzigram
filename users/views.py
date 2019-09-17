@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 
 # Forms
-from users.forms import ProfileForm
+from users.forms import ProfileForm, SignupForm
 
 
 @login_required()
@@ -73,27 +73,15 @@ def logout_view(request):
 def signup(request):
     """Sign up view."""
     if request.method == 'POST':
-        username = request.POST['username']
-        passwd = request.POST['passwd']
-        passwd_conf = request.POST['passwd_confirmation']
-
-        if passwd != passwd_conf:
-            return render(request, 'users/signup.html', {'error': 'Password confirmation does not match'})
-        else:
-            try:
-                user = User.objects.create_user(username=username, password=passwd)
-            except IntegrityError:
-                return render(request, 'users/signup.html', {'error': 'Username {0} already exists'.format(username)})
-
-            user.first_name = request.POST['first_name']
-            user.last_name = request.POST['last_name']
-            user.email = request.POST['email']
-            user.save()
-
-            profile = Profile(user=user)
-            profile.save()
-
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
             return redirect('login')
+    else:
+        form = SignupForm()
 
-    return render(request, 'users/signup.html')
-
+    return render(
+        request=request,
+        template_name='users/signup.html',
+        context={'form': form}
+    )
