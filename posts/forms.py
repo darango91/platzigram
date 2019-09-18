@@ -9,4 +9,4 @@ class PostForm(forms.ModelForm):
     """Post form."""
     class Meta:
         model = Post
-        fields = ('user', 'profile', 'title', 'photo')
+        fields = ('user', 'profile', 'title', 'photo', 'description')

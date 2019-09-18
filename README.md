@@ -1,2 +1,4 @@
-# platzigram
-An incredible Python/Django version of Instagram - Created for the django course of Platzi
+# Platzigram
+
+This is a special version of Instagram just for the fun of build it
+Enjoy it!
