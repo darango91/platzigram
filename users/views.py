@@ -1,6 +1,7 @@
 """ User views. """
 
 # Django
+from django.contrib.auth import views as auth_views
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +16,11 @@ from users.forms import SignupForm
 from posts.models import Post
 from users.models import Profile
 from django.contrib.auth.models import User
+
+
+class UserLoginView(auth_views.LoginView):
+    """Login view"""
+    template_name = 'users/login.html'
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -59,19 +65,8 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
         return reverse('users:detail', kwargs={'username': username})
 
 
-def login_view(request):
-    """Login view."""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('posts:feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
-
-    return render(request, 'users/login.html')
+class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
+    template_name = 'users/logout.html'
 
 
 @login_required()
