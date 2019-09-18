@@ -20,12 +20,12 @@ urlpatterns = [
     ),
     path(
         route='signup/',
-        view=views.signup,
+        view=views.UserSignUp.as_view(),
         name='signup'
     ),
     path(
         route='me/profile/',
-        view=views.update_profile,
+        view=views.UserUpdate.as_view(),
         name='update'
     ),
 
