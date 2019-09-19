@@ -13,7 +13,7 @@
                 <img
                     src="{{ user.profile.picture.url }}"
                     alt="@{{ user.username }}"
-                    class="rounded-circle" width="150px"/>
+                    class="rounded-circle" width="150px" height="150px"/>
             </div>
             <div class="col-sm-8">
                 <h2 style="font-weight: 100;">
@@ -36,13 +36,23 @@
                 </h2>
                 <div class="row mt-2" style="font-size: 1.2em">
                     <div class="col-sm-4">
-                        <b>{{ user.profile.posts_count }}785</b> posts
+                        <b>{{ posts.count }}</b> posts
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.followers }}1,401</b> followers
+                        {% if followers > 0 %}
+                            <b>{{ followers }}</b>
+                        {% else %}
+                            <b>0</b>
+                        {% endif %}
+                        followers
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.following }}491</b> following
+                        {% if following > 0 %}
+                            <b>{{ following }}</b>
+                        {% else %}
+                            <b>0</b>
+                        {% endif %}
+                        following
                     </div>
                 </div>
                 <div class="row mt-4">

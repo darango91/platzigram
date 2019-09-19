@@ -35,6 +35,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         """Add user's posts to context"""
         context = super().get_context_data(**kwargs)
         user = self.get_object()
+        context['following'] = user.profile.following.count()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
 
         return context
