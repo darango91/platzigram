@@ -75,3 +75,11 @@ def logout_view(request):
     """Logout a user"""
     logout(request)
     return redirect(reverse('users:login'))
+
+
+@login_required()
+def follow_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        request.user.profile.following.add(User.objects.get(username=username).profile)
+        return redirect(reverse('users:detail', kwargs={'username': username}))

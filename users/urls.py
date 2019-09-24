@@ -29,6 +29,12 @@ urlpatterns = [
         name='update'
     ),
 
+    path(
+        route='follow/',
+        view=views.follow_view,
+        name='follow'
+    ),
+
     # Posts
     path(
         route='<str:username>/',
