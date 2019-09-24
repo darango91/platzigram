@@ -30,13 +30,13 @@ urlpatterns = [
     ),
 
     path(
-        route='follow/',
+        route='follow/<str:username>',
         view=views.follow_view,
         name='follow'
     ),
 
     path(
-        route='unfollow/',
+        route='unfollow/<str:username>',
         view=views.unfollow_view,
         name='unfollow'
     ),

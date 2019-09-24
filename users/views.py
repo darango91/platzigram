@@ -2,10 +2,11 @@
 
 # Django
 from django.contrib.auth import views as auth_views
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView
 
@@ -17,6 +18,7 @@ from posts.models import Post
 from users.models import Profile
 from django.contrib.auth.models import User
 
+import json
 
 class UserLoginView(auth_views.LoginView):
     """Login view"""
@@ -79,16 +81,16 @@ def logout_view(request):
 
 
 @login_required()
-def follow_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
+def follow_view(request, username):
+    if request.method == 'GET':
         request.user.profile.add_follower(User.objects.get(username=username).profile)
         return redirect(reverse('users:detail', kwargs={'username': username}))
 
 
 @login_required()
-def unfollow_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
+def unfollow_view(request, username):
+
+    if request.method == 'GET':
+        print("it's working")
         request.user.profile.remove_relationship(User.objects.get(username=username).profile)
         return redirect(reverse('users:detail', kwargs={'username': username}))
