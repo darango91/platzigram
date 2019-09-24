@@ -35,6 +35,12 @@ urlpatterns = [
         name='follow'
     ),
 
+    path(
+        route='unfollow/',
+        view=views.unfollow_view,
+        name='unfollow'
+    ),
+
     # Posts
     path(
         route='<str:username>/',

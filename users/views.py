@@ -84,3 +84,11 @@ def follow_view(request):
         username = request.POST['username']
         request.user.profile.add_follower(User.objects.get(username=username).profile)
         return redirect(reverse('users:detail', kwargs={'username': username}))
+
+
+@login_required()
+def unfollow_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        request.user.profile.remove_relationship(User.objects.get(username=username).profile)
+        return redirect(reverse('users:detail', kwargs={'username': username}))

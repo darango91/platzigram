@@ -28,11 +28,18 @@
                                class="btn btn-sm btn-outline-info">
                                     Edit profile
                             </a>
+                        {% elif request.user.profile in user.profile.get_followers %}
+                            <form name="un_follow_user" method="post" action="{% url 'users:unfollow' %}">
+                                {% csrf_token %}
+                                <input hidden class="form-control" name="username" placeholder="Username"
+                                       type="text" required value="{{ user.username }}">
+                                <input type="submit" class="btn btn-sm btn-danger" value="Unfollow" />
+                            </form>
                         {% else %}
                             <form name="follow_user" method="post" action="{% url 'users:follow' %}">
                                 {% csrf_token %}
                                 <input hidden class="form-control" name="username" placeholder="Username"
-                                       type="text" required="true" value="{{ user.username }}">
+                                       type="text" required value="{{ user.username }}">
                                 <input type="submit" class="btn btn-sm btn-primary" value="Follow" />
                             </form>
                         {% endif %}
