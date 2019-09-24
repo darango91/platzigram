@@ -35,7 +35,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         """Add user's posts to context"""
         context = super().get_context_data(**kwargs)
         user = self.get_object()
-        context['following'] = user.profile.following.count()
+        context['following'] = user.profile.get_following().count()
+        context['followers'] = user.profile.get_followers().count()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
 
         return context
@@ -81,5 +82,5 @@ def logout_view(request):
 def follow_view(request):
     if request.method == 'POST':
         username = request.POST['username']
-        request.user.profile.following.add(User.objects.get(username=username).profile)
+        request.user.profile.add_follower(User.objects.get(username=username).profile)
         return redirect(reverse('users:detail', kwargs={'username': username}))

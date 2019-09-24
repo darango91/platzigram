@@ -9,10 +9,11 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    following = models.ManyToManyField(
+    relationships = models.ManyToManyField(
         'self',
-        related_name='followees',
-        symmetrical=False
+        through='Follower',
+        symmetrical=False,
+        related_name='followers'
     )
 
     website = models.URLField(max_length=200, blank=True)
@@ -26,13 +27,37 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def get_following_list(self):
-        followings = ''
-        if self.following.count() > 0:
-            for p in self.following.all():
-                followings = followings + p.user.username + ", "
-        return followings
+    def add_follower(self, profile):
+        relationship, created = Follower.objects.get_or_create(
+            profile_from=self,
+            profile_to=profile)
+        return relationship
 
-    def get_followers_list(self):
-        followers = Profile.objects.filter()
-        return None
+    def remove_relationship(self, person):
+        Follower.objects.filter(
+            profile_from=self,
+            profile_to=person).delete()
+        return
+
+    def get_relationships(self):
+        return self.relationships.filter(
+            to_profile__profile_from=self)
+
+    def get_related_to(self):
+        return self.followers.filter(
+            from_profile__profile_to=self)
+
+    def get_following(self):
+        return self.get_relationships()
+
+    def get_followers(self):
+        return self.get_related_to()
+
+
+class Follower(models.Model):
+    profile_from = models.ForeignKey(Profile, related_name='from_profile', on_delete=models.DO_NOTHING)
+    profile_to = models.ForeignKey(Profile, related_name='to_profile', on_delete=models.DO_NOTHING)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ('-created',)
